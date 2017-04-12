@@ -1,33 +1,12 @@
-<!doctype html>
-<html>
-<head>
-  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-  <meta charset='utf-8'>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width">
+/**
+ * Copyright (c) 2017 - present Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
-  <title>Immutable-re</title>
-
-  <!-- Flatdoc -->
-  <script src='support/vendor/jquery.js'></script>
-  <script src='legacy.js'></script>
-  <script src="highlightJs/build/highlight.pack.js"></script>
-  <link  href='highlightJs/src/styles/xcode.css' rel='stylesheet'>
-  <link rel="stylesheet" href="./octicons/octicons.css">
-  <script src='flatdoc.js'></script>
-
-
-  <!-- Flatdoc theme -->
-  <link  href='theme-white/style.css' rel='stylesheet'>
-  <script src='theme-white/script.js'></script>
-  <link  href='support/theme.css' rel='stylesheet'>
-  <script src='support/theme.js'></script>
-
-
-  <script id="markdown" type="text/markdown" src="index.html">
-Equality
----------------
-```reason
 let module rec Equality: {
   /** Equality functions for common types. */
 
@@ -60,10 +39,7 @@ let module rec Equality: {
   let string: Equality.t string;
   /** Equality for strings. */
 };
-```
-Ordering
----------------
-```reason
+
 let module rec Ordering: {
   /** Represents the absolute ordering of a type when comparing values. */
 
@@ -73,10 +49,7 @@ let module rec Ordering: {
   let greaterThan: Ordering.t;
   let lessThan: Ordering.t;
 };
-```
-Comparator
----------------
-```reason
+
 let module rec Comparator: {
   /** Comparison functions for common types. */
 
@@ -112,20 +85,14 @@ let module rec Comparator: {
   let toEquality: (Comparator.t 'a) => (Equality.t 'a);
   /** Converts a Comparator function to an Equality function. */
 };
-```
-Hash
----------------
-```reason
+
 let module Hash: {
   /** Hash functions for common types. */
 
   type t 'a = 'a => int;
   /** The Hash function type. */
 };
-```
-Equatable
----------------
-```reason
+
 let module Equatable: {
   /** Module types implemented by modules that support testing values for equality. */
 
@@ -138,10 +105,7 @@ let module Equatable: {
     /** An equality function for instances of type [t]. */
   };
 };
-```
-Comparable
----------------
-```reason
+
 let module Comparable: {
   /** Module types implemented by modules that support absolute ordering of values. */
 
@@ -156,10 +120,7 @@ let module Comparable: {
     /** A comparator function for instances of type [t]. */
   };
 };
-```
-Hashable
----------------
-```reason
+
 let module Hashable: {
   /** Module types implemented by modules that support hashing. */
 
@@ -172,10 +133,7 @@ let module Hashable: {
     /** An hashing function for instances of type [t]. */
   };
 };
-```
-Streamable
----------------
-```reason
+
 let module rec Streamable: {
   /** Module types implemented by modules that support lazily evaluated
    *  stream functions. All functions defined in this module are O(1).
@@ -272,10 +230,7 @@ let module rec Streamable: {
      */
   };
 };
-```
-Iterable
----------------
-```reason
+
 let module rec Iterable: {
   /** Functional iterators over a collection of values. Iterables are stateless and can be reused. */
 
@@ -367,10 +322,7 @@ let module rec Iterable: {
    *  least one value in [iterable]. If [iterable] is empty, returns [false].
    */
 };
-```
-Sequence
----------------
-```reason
+
 let module rec Sequence: {
   /** Functional pull based sequences. Sequences are generally lazy, computing values as
    *  they are pulled. Sequences are reusable and are guaranteed to produce the
@@ -449,10 +401,7 @@ let module rec Sequence: {
    *  until [first], [second] and [third] all complete.
    */
 };
-```
-Collection
----------------
-```reason
+
 let module rec Collection: {
   /** Module types implemented by all immutable value collections.
    *
@@ -610,10 +559,7 @@ let module rec Collection: {
     };
   };
 };
-```
-SequentialCollection
----------------
-```reason
+
 let module rec SequentialCollection: {
   /** Module types implemented by collections that support sequential access to
    *  the left most contained values. Concrete implementations include [Stack] and [SortedSet].
@@ -734,10 +680,7 @@ let module rec SequentialCollection: {
     };
   };
 };
-```
-NavigableCollection
----------------
-```reason
+
 let module rec NavigableCollection: {
   /** Module types implemented by Collections that are ordered or sorted and support
    *  navigation operations.
@@ -886,10 +829,7 @@ let module rec NavigableCollection: {
     };
   };
 };
-```
-Set
----------------
-```reason
+
 let module rec Set: {
   /** A read only view of a unique Set of values. The intent of this type is to enable
    *  interop between alternative concrete implementations such as SortedSet and HashSet.
@@ -1097,10 +1037,7 @@ let module rec Set: {
     };
   };
 };
-```
-NavigableSet
----------------
-```reason
+
 let module rec NavigableSet: {
   /*  Module types implemented by Sets that supports navigation operations. */
 
@@ -1117,8 +1054,22 @@ let module rec NavigableSet: {
     /** [toNavigableSet set] returns a NavigableSet view of [set]. */
   };
 
+  module type S1 = {
+    /** NavigableSet module type signature for types with a parametric type arity of 1. */
+
+    type t 'a;
+
+    include Set.S1 with type t 'a := t 'a;
+    include NavigableCollection.S1 with type t 'a := t 'a;
+
+    let toNavigableSet: (t 'a) => NavigableSet.t 'a;
+    /** [toNavigableSet set] returns a NavigableSet view of [set]. */
+  };
+
   type t 'a;
   /** The Set type. */
+
+  include S1 with type t 'a := NavigableSet.t 'a;
 
   let empty: unit => (NavigableSet.t 'a);
   /** The empty Set. */
@@ -1149,10 +1100,7 @@ let module rec NavigableSet: {
     };
   };
 };
-```
-KeyedStreamable
----------------
-```reason
+
 let module KeyedStreamable: {
   module type S2 = {
     type t 'k 'v;
@@ -1240,10 +1188,7 @@ let module KeyedStreamable: {
      */
   };
 };
-```
-KeyedIterable
-----------
-```
+
 let module rec KeyedIterable: {
   /** Functional iterators over a collection of key/value pairs. KeyedIterable are stateless and can be reused. */
 
@@ -1386,10 +1331,7 @@ let module rec KeyedIterable: {
    *  one key/value pair in [keyedIterable]. If [keyedIterable] is empty, returns [false].
    */
 };
-```
-KeyedCollection
-----------
-```
+
 let module rec KeyedCollection: {
   /** Module types implemented by all immutable keyed collections. This module
    *  signature does not impose any restrictions on the relationship between
@@ -1604,10 +1546,7 @@ let module rec KeyedCollection: {
     };
   };
 };
-```
-NavigableKeyedCollection
-----------
-```
+
 let module rec NavigableKeyedCollection: {
   /** Module types implemented by KeyedCollections that are ordered or sorted and support
    *  navigation operations.
@@ -1771,10 +1710,7 @@ let module rec NavigableKeyedCollection: {
   let empty: unit => (NavigableKeyedCollection.t 'k 'v);
   /** The empty Map. */
 };
-```
-Map
-----------
-```
+
 let module rec Map: {
   /** A read only view of a mappings keys to values. The intent of this type is to enable
    *  interop between alternative concrete implementations such as SortedMap and HashMap.
@@ -2038,10 +1974,7 @@ let module rec Map: {
     };
   };
 };
-```
-NavigableMap
-----------
-```
+
 let module rec NavigableMap: {
   /*  Module types implemented by NavigableMap that supports navigation operations. */
 
@@ -2106,10 +2039,7 @@ let module rec NavigableMap: {
     };
   };
 };
-```
-Indexed
-----------
-```
+
 let module rec Indexed: {
   /** Collections that support efficient indexed access to values.
    *
@@ -2251,10 +2181,7 @@ let module rec Indexed: {
     };
   };
 };
-```
-Deque
-----------
-```
+
 let module rec Deque: {
   /** A double-ended queue with efficient appends [addLast], prepends [addFirst]
    *  and removals from either end of the queue [removeFirstOrRaise] [removeLastOrRaise].
@@ -2296,10 +2223,7 @@ let module rec Deque: {
   let mutate: (Deque.t 'a) => (Deque.Transient.t 'a);
   /** [mutate deque] returns a Transient Deque containing the same values as [deque]. */
 };
-```
-HashMap
-----------
-```
+
 let module rec HashMap: {
   /** A Persistent Map implemented using hashing and a comparator function to resolve hash conflicts.
    *  HashMap is implemented as a bitmapped trie of AVLTrees. Most map operations have a computational
@@ -2351,10 +2275,7 @@ let module rec HashMap: {
   let mutate: (HashMap.t 'k 'v) => (HashMap.Transient.t 'k 'v);
   /** [mutate map] returns a Transient HashMap containing the same key/values pairs as [map]. */
 };
-```
-HashSet
-----------
-```
+
 let module rec HashSet: {
   /** A Persistent Set implemented using hashing and a comparator function to resolve hash conflicts.
    *  HashSet are implemented as bitmapped tries. Most set operations have a computational
@@ -2403,10 +2324,7 @@ let module rec HashSet: {
   let mutate: (HashSet.t 'a) => (HashSet.Transient.t 'a);
   /** [mutate set] returns a Transient HashSet containing the same values as [set]. */
 };
-```
-IntMap
-----------
-```
+
 let module rec IntMap: {
   /** A Map optimized for integer keys. IntMap is implemented as a bitmapped trie.
    *  Most map operations have a computational complexity of O(log32 N).
@@ -2432,10 +2350,7 @@ let module rec IntMap: {
   let mutate: (t 'v) => (IntMap.Transient.t 'v);
   /** [mutate map] returns a Transient IntMap containing the same key/values pairs as [map]. */
 };
-```
-IntRange
-----------
-```
+
 let module rec IntRange: {
   /** A contiguous Set of discrete integers */
 
@@ -2452,10 +2367,7 @@ let module rec IntRange: {
    *  than or equal to 0.
    */
 };
-```
-IntSet
-----------
-```
+
 let module rec IntSet: {
   /** A Persistent Set optimized for integer values. IntSets are implemented as
    *  bitmapped tries. Most set operations have a computational complexity of O(log32 N).
@@ -2491,10 +2403,7 @@ let module rec IntSet: {
   let mutate: t => IntSet.Transient.t;
   /** [mutate set] returns a Transient IntSet containing the same values as [set]. */
 };
-```
-List
-----------
-```
+
 let module rec List: {
   /** OCaml singly-linked list */
 
@@ -2551,10 +2460,7 @@ let module rec List: {
   let toSequence: (List.t 'a) => (Sequence.t 'a);
   /** [toSequence list] returns a Sequence of the values in [list] in order. */
 };
-```
-ReadOnlyArray
-----------
-```
+
 let module rec ReadOnlyArray: {
   /** Opaque wrapper around an underlying array instance that provides read only semantics */
 
@@ -2575,10 +2481,7 @@ let module rec ReadOnlyArray: {
    *  responsibility to ensure that [arr] is not subsequently mutated.
    */
 };
-```
-Stack
-----------
-```
+
 let module rec Stack: {
   /** A singly-linked stack with an O(1) count operation. */
 
@@ -2595,10 +2498,7 @@ let module rec Stack: {
   let toList: (Stack.t 'a) => (list 'a);
   /** [toList stack] returns the underlying List backing the stack */
 };
-```
-SortedMap
-----------
-```
+
 let module SortedMap: {
   /** Sorted map implemented as an AVL tree. Most set operations
    *  have a computational complexity of O(log N).
@@ -2616,10 +2516,7 @@ let module SortedMap: {
   let module Make1: (Comparable: Comparable.S) => S1 with type k = Comparable.t;
   /** Module function to create a SortedMap. */
 };
-```
-SortedSet
-----------
-```
+
 let module SortedSet: {
   /** Sorted set implemented as an AVL tree. Most set operations
    *  have a computational complexity of O(log N).
@@ -2635,10 +2532,7 @@ let module SortedSet: {
   let module Make: (Comparable: Comparable.S) => S with type a = Comparable.t;
   /** Module function to create a SortedSet. */
 };
-```
-Vector
-----------
-```
+
 let module rec Vector: {
   /** An Indexed supporting efficient prepend, appends, indexing, conctentation,
    *  and splits. Vectors are implemented as relaxed radix balanced trees. Computational
@@ -2674,53 +2568,3 @@ let module rec Vector: {
   let mutate: (Vector.t 'a) => (Vector.Transient.t 'a);
   /** [mutate vector] returns a Transient Vector containing the same values as [set]. */
 };
-
-```
-  </script>
-
-  <!-- Initializer -->
-  <script>
-    Flatdoc.run({
-      fetcher: function(callback) {
-        callback(null, document.getElementById('markdown').innerHTML);
-      },
-      highlight: function (code, value) {
-        return (value === 'reason') ? hljs.highlight('reason', code).value : hljs.highlight(value, code).value;
-      },
-    });
-  </script>
-
-  <!-- Meta -->
-  <meta property="og:image" content="./images/CubeRed598_614.png" />
-  <meta property="og:image:secure_url" content="./images/CubeRed598_614.png" />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1196" />
-  <meta property="og:image:height" content="1228" />
-
-  <meta content="Immutable-re: Immutable collections for Reason" name="description">
-  <meta content="Immutable-re: Immutable collections for Reaso" property="og:description">
-  <meta content="http://facebookincubator.github.io/immutable-re/images/images/logo-800x215.png" property="og:image">
-</head>
-<body role='flatdoc' class='big-h3 large-brief'>
-
-  <div class='header'>
-    <div class='left'>
-      <h1><a href='index.html'>Immutable-re</a></h1>
-      <ul>
-        <li><a href='./api.html'>API</a></li>
-      </ul>
-      <ul>
-        <li><a href='https://github.com/facebookincubator/immutable-re'>GitHub</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class='content-root'>
-    <div class='menubar'>
-      <div class='menu section' role='flatdoc-menu'></div>
-    </div>
-    <div role='flatdoc-content' class='content'></div>
-  </div>
-
-</body>
-</html>

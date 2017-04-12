@@ -19,11 +19,16 @@ _build/**
 *.tgz
 node_modules
 immutable.install
-immutable.*
 
-# Ignore bsb generated merlin files
-/reUnit/.merlin
-
-# Ignore bsb generate lib directories
-/reUnit/lib
-/lib
+_tags
+/docs
+/lib/bs
+/lib/js/test
+/lib/js/perf
+Makefile
+opam
+/perf
+/pkg
+release.js
+/reUnit
+/test
