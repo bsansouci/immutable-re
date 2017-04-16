@@ -73,10 +73,12 @@ const main = async () => {
   const packageJSON = await readFile (packageJSONFile, "UTF-8");
   const version = JSON.parse(packageJSON).version;
 
-  await writeFiles (version);
+  // await writeFiles (version);
 
-  await exec(`git add ${ opamFile } ${ metaFile } ${ packageJSONFile }`)
-  await exec(`git commit -m "Version ${ version }"`);
+  // await exec(`git add ${ opamFile } ${ metaFile } ${ packageJSONFile }`)
+  // await exec(`git commit -m "Version ${ version }"`);
+  
+  
   await exec(`git tag -a ${ version } -m "Version ${ version }."`);
   await exec('git push "git@github.com:facebookincubator/immutable-re.git"');
   await exec(`git push "git@github.com:facebookincubator/immutable-re.git" tag ${version}`);

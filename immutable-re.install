@@ -1,0 +1,13 @@
+# immutable-re
+
+lib: [
+  "_build/META" {"META"}
+  "_build/opam" {"opam"}
+  "_build/src/immutable-re.a" {"immutable-re.a"}
+  "_build/src/immutable-re.cma" {"immutable-re.cma"}
+  "_build/src/immutable-re.cmi" {"immutable-re.cmi"}
+  "_build/src/immutable-re.cmo" {"immutable-re.cmo"}
+  "_build/src/immutable-re.cmt" {"immutable-re.cmt"}
+  "_build/src/immutable-re.cmx" {"immutable-re.cmx"}
+  "_build/src/immutable-re.cmxa" {"immutable-re.cmxa"}
+  "_build/src/immutable-re.o" {"immutable-re.o"} ]

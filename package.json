@@ -11,7 +11,7 @@
     "ocaml",
     "immutable"
   ],
-  "author": "facebookincubator",
+  "author": "Dave Bordoley <bordoley>",
   "contributors": [{ "name": "Dave Bordoley", "email": "bordoley@gmail.com" }],
   "license": "BSD-3-Clause",
   "files": [
@@ -29,7 +29,18 @@
   },
   "devDependencies": {
     "reunit": "./reUnit",
-    "bs-platform": "https://github.com/bloomberg/bucklescript.git"
+    "bs-platform": "https://github.com/bloomberg/bucklescript.git",
+    "opam_of_packagejson": "bsansouci/opam_of_packagejson"
+  },
+  "opam": {
+    "dependencies": {
+      "topkg": "{build >=  \"0.8.1\" & < \"0.9\"}",
+      "reason": "{build >=  \"1.13.3\"}"
+    },
+    "install": {
+      "path": "_build/src",
+      "extensions": [".cmo", ".cmx", ".cmi", ".cmt", ".o", ".cma", ".cmxa", ".a"]
+    }
   },
   "scripts": {
     "start": "bsb -make-world -w",
@@ -40,6 +51,6 @@
     "opam-init": "opam init",
     "opam-install-mac": "brew update && brew install opam",
     "opam-pin": "eval $(opam config env) && opam update && opam switch 4.02.3 && opam pin add -y immutable .",
-    "release": "node release.js"
+    "release": "opam_of_packagejson -gen-install package.json > opam && node release.js"
   }
 }
