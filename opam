@@ -11,7 +11,6 @@ authors: [
 tags: [ "reason" "reasonml" "ocaml" "immutable" ]
 depends: [
   "reason" {build >=  "1.13.3"}
-  "topkg" {build >=  "0.8.1" & < "0.9"}
 ]
 build: [
   [ make "build" ]
