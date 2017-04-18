@@ -34,12 +34,9 @@
   },
   "opam": {
     "dependencies": {
-      "reason": "{build >=  \"1.13.3\"}"
+      "reason": "build >=  \"1.13.3\""
     },
-    "install": {
-      "path": "_build/src",
-      "extensions": [".cmo", ".cmx", ".cmi", ".cmt", ".o", ".cma", ".cmxa", ".a"]
-    }
+    "installPath": "_build/src"
   },
   "scripts": {
     "start": "bsb -make-world -w",
